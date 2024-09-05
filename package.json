@@ -8,6 +8,7 @@
   },
   "type": "module",
   "scripts": {
+    "version": 2,
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

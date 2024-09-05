@@ -89,7 +89,7 @@ app.post("/submit", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-    res.render(__dirname + "index.ejs", {
+    res.render("index.ejs", {
         postList: postlist
     });
 });
