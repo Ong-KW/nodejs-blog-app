@@ -1,0 +1,72 @@
+<%- include('partials/header.ejs') %>
+
+    <header>
+        <h1>My Blog</h1>
+        <p>Hello. Welcome to my blog.</p>
+    </header>
+    
+    <div class="post-container">
+        <form action="/submit" method="POST">
+            <div class="post-group">
+                <input type="text" name="postTitle" class="post-input" placeholder="Title"><br>
+                <input type="text" name="postAuthor" class="post-input" placeholder="Author"><br>
+                <textarea name="postContent" class="post-input" placeholder="Content" required></textarea><br>
+            </div>
+            <div class="btn-group">
+                <input type="submit" class="btn-post" value="POST">
+            </div>
+        </form>
+    </div>
+
+    <% if (locals.postList) { %>
+
+        <% postList.forEach((post) => {  %>
+            <div class="post-container">
+                <div class="post-group">
+                    <h2><%= post.title %></h2>
+                    <small>By <%= post.author %></small>
+                    <br>
+                    <small><%= post.date %></small>
+                    <p><%= post.content %></p>
+                </div>
+                <div class="btn-group">
+                    <form action="/delete" method="POST">
+                        <input type="hidden" id="postId" name="postId" value="<%= post.id %>">
+                        <input type="submit" class="btn-delete" value="DELETE">
+                    </form>
+                    <button class="btn-edit">EDIT</button>
+                </div>
+                <div id="edit-group">
+                    <form id="edit-form" action="/update" method="POST">
+                        <div class="post-group">
+                            <input type="hidden" id="postId" name="postId" class="post-input" value="<%= post.id %>">
+                            <input id="postTitle" name="postTitle" class="post-input" value="<%= post.title %>"><br>
+                            <input id="postAuthor" name="postAuthor" class="post-input" value="<%= post.author %>"><br>
+                            <textarea name="postContent" class="post-input" placeholder="Content"><%= post.content %></textarea>
+                        </div>
+                        <div class="btn-group">
+                            <input type="submit" class="btn-post" value="UPDATE">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        <% }); %>
+
+    <% } else { %>
+        <p>No posts to show.</p>
+    <% } %>
+
+    <script>
+
+        $(".post-container").on("click",".btn-edit", function () {
+            $(this).addClass("hidden");
+            $(this).parent().next().show();
+        });
+    </script>
+
+<%- include('partials/footer.ejs') %>
+
+
+
+
