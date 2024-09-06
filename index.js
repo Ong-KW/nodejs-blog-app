@@ -45,7 +45,7 @@ app.use(compression());
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
-            "script-src": "self",
+            "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
         }
     })
 );
