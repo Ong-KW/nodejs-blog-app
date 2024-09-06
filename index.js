@@ -1,10 +1,14 @@
 import express from "express";
 import bodyParser from "body-parser";
 import env from "dotenv";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
+import compression from "compression";
+import helmet from "helmet";
+import { rateLimit } from "express-rate-limit";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const limiter = rateLimit({
+    windowsMS: 1*60*1000,
+    max: 20,
+});
 
 env.config();
 
@@ -37,6 +41,15 @@ var postlist = [
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(compression());
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            "script-src": "self",
+        }
+    })
+);
+app.use(limiter);
 
 app.post("/update", (req, res) => {
 
@@ -89,6 +102,7 @@ app.post("/submit", (req, res) => {
 });
 
 app.get("/", (req, res) => {
+    
     res.render("index.ejs", {
         postList: postlist
     });
